@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -43,18 +44,17 @@ public class Frm_NhanVien extends JFrame {
 	private JTextField txtDiaChi;
 
 	NhanVienBo nvbo = new NhanVienBo();	
-	ArrayList<NhanVien> dsnv;
+	static ArrayList<NhanVien> dsnv;
 	private JLabel lblGioiTinh;
 	private JTextField txtGioiTinh;
 	private JTable table;
-	private JTabbedPane tabbedPane_1;
 	private JScrollPane scrollPane;
-	private JTable table_1;
-	private JScrollPane scrollPane_1;
-	private JTable table_2;
-	private JTable table_3;
+
+
 	private JTextField txtsize;
-	Void NapBang(ArrayList<NhanVien> dsnv) {
+	Void NapBang(ArrayList<NhanVien> dsnv) throws SQLException {
+		new CoSo().KetNoi();
+		dsnv=nvbo.getnv();
 		DefaultTableModel mh= new DefaultTableModel();
 		String[] td= {"STT", "Ma Nhan Vien","Ho Ten", "Tuoi", "So Dien Thoai", "Dia Chi", "Gioi Tinh"};
 		mh.setColumnIdentifiers(td);
@@ -125,57 +125,57 @@ public class Frm_NhanVien extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel txtx = new JLabel("Ma Nhan Vien");
-		txtx.setBounds(10, 14, 67, 14);
+		txtx.setBounds(10, 14, 110, 14);
 		contentPane.add(txtx);
 		
 		txtMaNV = new JTextField();
-		txtMaNV.setBounds(120, 11, 184, 20);
+		txtMaNV.setBounds(130, 14, 171, 20);
 		contentPane.add(txtMaNV);
 		txtMaNV.setColumns(10);
 		
 		JLabel lblTenNhanVien = new JLabel("Ten Nhan Vien");
-		lblTenNhanVien.setBounds(10, 52, 83, 14);
+		lblTenNhanVien.setBounds(339, 14, 87, 14);
 		contentPane.add(lblTenNhanVien);
 		
 		txtTenNV = new JTextField();
 		txtTenNV.setColumns(10);
-		txtTenNV.setBounds(120, 49, 184, 20);
+		txtTenNV.setBounds(436, 14, 172, 20);
 		contentPane.add(txtTenNV);
 		
 		JLabel lblTuoi = new JLabel("Tuoi");
-		lblTuoi.setBounds(10, 93, 61, 14);
+		lblTuoi.setBounds(10, 53, 73, 14);
 		contentPane.add(lblTuoi);
 		
 		txtTuoiNV = new JTextField();
 		txtTuoiNV.setColumns(10);
-		txtTuoiNV.setBounds(120, 90, 184, 20);
+		txtTuoiNV.setBounds(130, 50, 171, 20);
 		contentPane.add(txtTuoiNV);
 		
 		final JLabel null2 = new JLabel("So Dien Thoai");
-		null2.setBounds(326, 14, 67, 14);
+		null2.setBounds(339, 53, 77, 14);
 		contentPane.add(null2);
 		
 		txtSDT = new JTextField();
 		txtSDT.setColumns(10);
-		txtSDT.setBounds(403, 11, 184, 20);
+		txtSDT.setBounds(436, 50, 174, 20);
 		contentPane.add(txtSDT);
 		
 		JLabel null1 = new JLabel("Dia Chi");
-		null1.setBounds(326, 52, 61, 14);
+		null1.setBounds(10, 87, 61, 14);
 		contentPane.add(null1);
 		
 		txtDiaChi = new JTextField();
 		txtDiaChi.setColumns(10);
-		txtDiaChi.setBounds(403, 49, 184, 20);
+		txtDiaChi.setBounds(130, 81, 171, 20);
 		contentPane.add(txtDiaChi);
 		
 		lblGioiTinh = new JLabel("Gioi Tinh");
-		lblGioiTinh.setBounds(326, 90, 61, 14);
+		lblGioiTinh.setBounds(339, 87, 80, 14);
 		contentPane.add(lblGioiTinh);
 		
 		txtGioiTinh = new JTextField();
 		txtGioiTinh.setColumns(10);
-		txtGioiTinh.setBounds(403, 87, 184, 20);
+		txtGioiTinh.setBounds(436, 84, 174, 20);
 		contentPane.add(txtGioiTinh);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -198,17 +198,17 @@ public class Frm_NhanVien extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					//kiem tra xem ma da ton tai chua?
-					
 					int kt = nvbo.Them(Integer.parseInt(txtMaNV.getText()),txtTenNV.getText(), Integer.parseInt(txtTuoiNV.getText()),txtSDT.getText(),txtDiaChi.getText(),Boolean.parseBoolean(txtGioiTinh.getText()));
 					if(kt==0) {//truong hop kt = false thi trung ma nhan vien
-						JOptionPane.showMessageDialog(null, "Trung ma!");JOptionPane.showMessageDialog(null, "Trung ma!");
+						JOptionPane.showMessageDialog(null, "Trung ma!");
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Da Them Nhan Vien!");
+						
 						NapBang(dsnv);
 					}
 				} catch (Exception e2) {
-					// TODO: handle exception
+					e2.printStackTrace();
 				}
 			}
 		});
@@ -218,18 +218,14 @@ public class Frm_NhanVien extends JFrame {
 		JButton btnSua = new JButton("Sua");
 		btnSua.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			try {
-//				if(txtMaNV.getText().trim().equals(""));{
-//					JOptionPane.showMessageDialog(null, "Khong duoc de trong Ma Nhan Vien");JOptionPane.showMessageDialog(null, "Trung ma!");
-//				}
-				//kiem tra
+			try {			
 				int kt = nvbo.Sua(Integer.parseInt(txtMaNV.getText()),txtTenNV.getText(), Integer.parseInt(txtTuoiNV.getText()),txtSDT.getText(),txtDiaChi.getText(),Boolean.parseBoolean(txtGioiTinh.getText()));
-				if(kt==1) {
-					JOptionPane.showMessageDialog(null, "Da Sua!");
-					NapBang(dsnv);
+				if(kt==0) {
+					JOptionPane.showMessageDialog(null, "Loi");
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Loi");
+					JOptionPane.showMessageDialog(null, "Da Sua!");
+					NapBang(dsnv);
 				}
 			} catch (Exception e2) {
 				// TODO: handle exception
@@ -261,6 +257,11 @@ public class Frm_NhanVien extends JFrame {
 		contentPane.add(btnXoa);
 		
 		JButton btnTimKiem = new JButton("Tim kiem");
+		btnTimKiem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnTimKiem.setBounds(480, 137, 127, 23);
 		contentPane.add(btnTimKiem);
 		
@@ -280,6 +281,20 @@ public class Frm_NhanVien extends JFrame {
 		JLabel lblNewLabel = new JLabel("So Luong");
 		lblNewLabel.setBounds(48, 459, 55, 14);
 		contentPane.add(lblNewLabel);
+		
+		JButton btnNewButton_1 = new JButton("Refresh");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					NapBang(dsnv);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_1.setBounds(518, 174, 89, 23);
+		contentPane.add(btnNewButton_1);
 		
 		
 	}

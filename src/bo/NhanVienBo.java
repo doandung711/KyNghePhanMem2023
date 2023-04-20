@@ -9,20 +9,21 @@ import dao.NhanVienDao;
 public class NhanVienBo {
 	NhanVienDao nvdao = new NhanVienDao();
 	ArrayList<NhanVien> dsnv= new  ArrayList<NhanVien>();
-	
+		
 	public ArrayList<NhanVien> getnv() throws SQLException{
 		dsnv = nvdao.getnv();
 		return dsnv;
 	}
 	
-	public int Them(int MaNhanVien, String HoTen, int Tuoi, String SoDienThoai, String DiaChi, boolean  GioiTinh)throws Exception {
+	public int Them(int maNhanVien, String HoTen, int Tuoi, String SoDienThoai, String DiaChi, boolean  GioiTinh)throws Exception {
+		
+//		System.out.print(dsnv.get(MaNhanVien));
 		for(NhanVien nv : dsnv) {
-			if(nv.getMaNhanVien()==MaNhanVien) 
+			if(nv.getMaNhanVien()==maNhanVien) 
 				return 0;
-			else
-				dsnv.add(new NhanVien(MaNhanVien,HoTen,Tuoi,SoDienThoai,DiaChi,GioiTinh));
 		}
-		return nvdao.Them(MaNhanVien,HoTen,Tuoi,SoDienThoai,DiaChi,GioiTinh);
+		dsnv.add(new NhanVien(maNhanVien,HoTen,Tuoi,SoDienThoai,DiaChi,GioiTinh));
+		return nvdao.Them(maNhanVien,HoTen,Tuoi,SoDienThoai,DiaChi,GioiTinh);
 	}
 	public int Sua(int MaNhanVien, String HoTen, int Tuoi, String SoDienThoai, String DiaChi, boolean  GioiTinh)throws Exception {
 		for(NhanVien nv: dsnv) {
@@ -32,7 +33,7 @@ public class NhanVienBo {
 				nv.setSoDienThoai(SoDienThoai);
 				nv.setDiaChi(DiaChi);
 				nv.setGioiTinh(GioiTinh);
-				nvdao.Sua(MaNhanVien, HoTen, Tuoi, SoDienThoai, DiaChi, GioiTinh);
+				return nvdao.Sua(MaNhanVien, HoTen, Tuoi, SoDienThoai, DiaChi, GioiTinh);
 			}
 		}
 		return 0;
