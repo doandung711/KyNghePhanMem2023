@@ -45,7 +45,7 @@ public class NhanVienDao {
 			return kt;
 	}
 	public int Sua (int maNhanVien, String hoTen,int tuoi,String soDienThoai,String diaChi,Boolean gioiTinh)throws Exception{
-		String sql = "Update NhanVien Set MaNhanVien=?, HoTen=?, Tuoi=?, SoDienThoai=?,DiaChi=?,GioiTinh=?";
+		String sql = "Update NhanVien Set MaNhanVien=?, HoTen=?, Tuoi=?, SoDienThoai=?,DiaChi=?,GioiTinh=? Where MaNhanVien=?";
 		PreparedStatement cmd= CoSo.cn.prepareStatement(sql);
 		cmd.setInt(1, maNhanVien);
 		cmd.setString(2, hoTen);
@@ -53,6 +53,7 @@ public class NhanVienDao {
 		cmd.setString(4,soDienThoai);
 		cmd.setString(5,diaChi);
 		cmd.setBoolean(6,gioiTinh);
+		cmd.setInt(7,maNhanVien);
 		return cmd.executeUpdate();
 	}
 	public int Xoa (int maNhanVien) throws Exception{
