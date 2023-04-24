@@ -30,7 +30,7 @@ public class LuongDao {
 		return cmd.executeUpdate();
 	}
 	public int Sua (int MaNhanVien,Float luong)throws Exception{
-		String sql = "Update Luong Set luong=? Where MaNhanVien=?";
+		String sql = "Update Luong Set Luong=? Where MaNhanVien=?";
 		PreparedStatement cmd= CoSo.cn.prepareStatement(sql);
 		cmd.setFloat(1, luong);
 		cmd.setInt(2,MaNhanVien);

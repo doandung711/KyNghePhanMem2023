@@ -8,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import bean.Luong;
-import bean.NhanVien;
 import bo.LuongBo;
 import dao.CoSo;
 
@@ -67,7 +66,7 @@ public class Frm_Luong_NhanVien extends JFrame {
 		}
 		else {
 		DefaultTableModel mh= new DefaultTableModel();
-		String[] td= {"STT", "Ma Nhan Vien","Ho Ten", "Tuoi", "So Dien Thoai", "Dia Chi", "Gioi Tinh"};
+		String[] td= {"STT", "Ma Nhan Vien", "Luong"};
 		mh.setColumnIdentifiers(td);
 		int stt= 1;
 		int size = dsluong.size();
@@ -118,8 +117,8 @@ public class Frm_Luong_NhanVien extends JFrame {
 			}
 		});
 		
-			
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Quan Ly Luong Nhan Vien");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 660, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -201,6 +200,17 @@ public class Frm_Luong_NhanVien extends JFrame {
 		JButton btnXoa = new JButton("Xoa");
 		btnXoa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+					String key=JOptionPane.showInputDialog("Nhap masv muon xoa: ");
+				try {
+					int kt=lbo.Xoa(Integer.parseInt(key));
+				if(kt==0)
+					JOptionPane.showMessageDialog(null, "Khong xoa duoc!");
+				else
+					JOptionPane.showMessageDialog(null, "Da xoa");
+					NapBang(dsl);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
 			}
 		});
 		btnXoa.setBounds(311, 62, 115, 23);
@@ -223,18 +233,11 @@ public class Frm_Luong_NhanVien extends JFrame {
 		
 		JButton btnNewButton_1 = new JButton("Refresh");
 		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String key=JOptionPane.showInputDialog("Nhap masv muon xoa: ");
-				
+			public void actionPerformed(ActionEvent e) {	
 				try {
-					int kt=lbo.Xoa(Integer.parseInt(key));
-				if(kt==0)
-					JOptionPane.showMessageDialog(null, "Khong xoa duoc!");
-				else
-					JOptionPane.showMessageDialog(null, "Da xoa");
 					NapBang(dsl);
-				} catch (Exception e2) {
-					e2.printStackTrace();
+				}catch (Exception e1 ) {
+					// TODO: handle exception
 				}
 			}
 		});
